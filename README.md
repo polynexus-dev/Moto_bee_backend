@@ -49,3 +49,4 @@ http://127.0.0.1:8000/admin/
 | POST | `/api/v1/bookings/` | ✅ Customer | Book slot |
 | PATCH | `/api/v1/bookings/{id}/accept/` | ✅ Owner | Accept booking |
 | PATCH | `/api/v1/bookings/{id}/complete/` | ✅ Owner | Complete booking |
+# Moto_bee_backend
