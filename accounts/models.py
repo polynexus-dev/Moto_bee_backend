@@ -35,4 +35,4 @@ class User(AbstractUser):
         verbose_name = 'User'
 
     def __str__(self):
-        return f"{self.email} ({self.role})"
+        return f"{self.email} ({self.role})"    
