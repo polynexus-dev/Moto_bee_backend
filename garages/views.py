@@ -29,7 +29,7 @@ def haversine(lat1, lon1, lat2, lon2):
 # ─── Garages ──────────────────────────────────────────────────
 
 class GarageListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_serializer_class(self):
         return GarageCreateUpdateSerializer if self.request.method == 'POST' else GarageListSerializer

@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['uid', 'name', 'email', 'phone', 'role']
+        fields = ['uid', 'name', 'email','phone', 'role']
 
     @extend_schema_field(serializers.CharField())
     def get_name(self, obj) -> str:
@@ -20,7 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=8)
-    name = serializers.CharField(write_only=True)
+    name     = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
@@ -32,8 +32,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         return value
 
     def create(self, validated_data):
-        name = validated_data.pop('name', '')
+        name  = validated_data.pop('name', '')
         parts = name.split(' ', 1)
+
         user = User.objects.create_user(
             username=validated_data['email'],
             email=validated_data['email'],
@@ -47,14 +48,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    email    = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
 
 class LoginResponseSerializer(serializers.Serializer):
-    access = serializers.CharField()
+    access  = serializers.CharField()
     refresh = serializers.CharField()
-    user = UserSerializer()
+    user    = UserSerializer()
 
 
 class LogoutSerializer(serializers.Serializer):
@@ -73,7 +74,7 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         if name:
             parts = name.split(' ', 1)
             instance.first_name = parts[0]
-            instance.last_name = parts[1] if len(parts) > 1 else ''
+            instance.last_name  = parts[1] if len(parts) > 1 else ''
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()

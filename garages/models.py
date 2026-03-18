@@ -19,8 +19,8 @@ class Garage(models.Model):
     name = models.CharField(max_length=200)
     address = models.TextField()
     phone = models.CharField(max_length=15)
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(default=0.0)
+    longitude = models.FloatField(default=0.0)
 
     # Services stored as JSON lists: ["Oil Change", "Chain Service", ...]
     bike_services = models.JSONField(default=list, blank=True)
