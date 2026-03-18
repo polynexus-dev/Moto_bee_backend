@@ -12,7 +12,7 @@ from .serializers import (
     BookingSerializer, BookingCreateSerializer,
     RejectSerializer, DurationSerializer,
 )
-from garages.models import Garage, DaySchedule
+from garages.models import Garage
 from garages.permissions import IsOwner, IsCustomer
 from notifications.tasks import send_booking_notification
 
@@ -101,11 +101,11 @@ class RejectBookingView(APIView):
             return Response({'detail': f'Cannot reject a {booking.status} booking.'}, status=400)
         serializer = RejectSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        try:
-            schedule = DaySchedule.objects.get(garage=booking.garage, date=booking.date)
-            schedule.unmark_slot(booking.time.replace(':', ''))
-        except DaySchedule.DoesNotExist:
-            pass
+        # try:
+        #     schedule = DaySchedule.objects.get(garage=booking.garage, date=booking.date)
+        #     schedule.unmark_slot(booking.time.replace(':', ''))
+        # except DaySchedule.DoesNotExist:
+        #     pass
         booking.status = 'rejected'
         booking.rejection_note = serializer.validated_data.get('rejection_note', '')
         booking.save()
@@ -192,12 +192,12 @@ class CancelBookingView(APIView):
             return Response({'detail': 'Forbidden.'}, status=403)
         if booking.status in ('completed', 'cancelled'):
             return Response({'detail': f'Cannot cancel a {booking.status} booking.'}, status=400)
-        if booking.status in ('pending', 'accepted'):
-            try:
-                schedule = DaySchedule.objects.get(garage=booking.garage, date=booking.date)
-                schedule.unmark_slot(booking.time.replace(':', ''))
-            except DaySchedule.DoesNotExist:
-                pass
+        # if booking.status in ('pending', 'accepted'):
+            # try:
+            #     schedule = DaySchedule.objects.get(garage=booking.garage, date=booking.date)
+            #     schedule.unmark_slot(booking.time.replace(':', ''))
+            # except DaySchedule.DoesNotExist:
+            #     pass
         booking.status = 'cancelled'
         booking.save()
         return Response(BookingSerializer(booking).data)

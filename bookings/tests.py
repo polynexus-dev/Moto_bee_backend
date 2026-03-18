@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from rest_framework import status
-from garages.models import Garage, DaySchedule
+from garages.models import Garage
 
 User = get_user_model()
 
@@ -26,10 +26,10 @@ class BookingLifecycleTests(TestCase):
             bike_services=['Oil Change'],
         )
         # Create an open schedule
-        schedule = DaySchedule(garage=self.garage, date='2026-06-01', is_open=True,
-                               start_hour=9, end_hour=11, interval_minutes=60)
-        schedule.generate_slots()
-        schedule.save()
+        # schedule = DaySchedule(garage=self.garage, date='2026-06-01', is_open=True,
+        #                        start_hour=9, end_hour=11, interval_minutes=60)
+        # schedule.generate_slots()
+        # schedule.save()
 
     def _book(self):
         self.client.force_authenticate(user=self.customer)

@@ -1,14 +1,13 @@
 from django.contrib import admin
-from .models import Garage, DaySchedule, ServiceOffer, CuratedService
+from .models import Garage, GarageSchedule, ServiceOffer, CuratedService
 
 @admin.register(Garage)
 class GarageAdmin(admin.ModelAdmin):
-    list_display = ['name', 'owner', 'city_from_address', 'is_active']
-    def city_from_address(self, obj): return obj.address[:40]
+    list_display = ['name', 'owner', 'phone', 'is_active']
 
-@admin.register(DaySchedule)
-class DayScheduleAdmin(admin.ModelAdmin):
-    list_display = ['garage', 'date', 'is_open', 'start_hour', 'end_hour']
+@admin.register(GarageSchedule)
+class GarageScheduleAdmin(admin.ModelAdmin):
+    list_display = ['garage', 'day', 'is_open', 'start_hour', 'end_hour']
 
 @admin.register(ServiceOffer)
 class ServiceOfferAdmin(admin.ModelAdmin):
