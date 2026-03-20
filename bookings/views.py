@@ -2,7 +2,7 @@
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, OpenApiResponse
@@ -84,6 +84,33 @@ class AcceptBookingView(APIView):
         return Response(BookingSerializer(booking).data)
 
 
+# class RejectBookingView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     @extend_schema(
+#         request=RejectSerializer,
+#         responses={200: BookingSerializer},
+#         tags=['Bookings'],
+#         summary='Owner rejects a booking with optional note',
+#     )
+#     def patch(self, request, pk):
+#         booking = get_object_or_404(Booking, pk=pk)
+#         if booking.garage.owner != request.user:
+#             return Response({'detail': 'Forbidden.'}, status=403)
+#         if booking.status not in ('pending', 'accepted'):
+#             return Response({'detail': f'Cannot reject a {booking.status} booking.'}, status=400)
+#         serializer = RejectSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         # try:
+#         #     schedule = DaySchedule.objects.get(garage=booking.garage, date=booking.date)
+#         #     schedule.unmark_slot(booking.time.replace(':', ''))
+#         # except DaySchedule.DoesNotExist:
+#         #     pass
+#         booking.status = 'rejected'
+#         booking.rejection_note = serializer.validated_data.get('rejection_note', '')
+#         booking.save()
+#         send_booking_notification(booking, 'rejected')
+#         return Response(BookingSerializer(booking).data)
 class RejectBookingView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -201,3 +228,26 @@ class CancelBookingView(APIView):
         booking.status = 'cancelled'
         booking.save()
         return Response(BookingSerializer(booking).data)
+    
+# GET /bookings/booked-slots/?garage=<id>&date=<YYYY-MM-DD>
+class BookedSlotsView(APIView):
+    permission_classes = [AllowAny]   # customers don't need auth to check
+
+    def get(self, request):
+        garage_id = request.query_params.get('garage')
+        date      = request.query_params.get('date')
+
+        if not garage_id or not date:
+            return Response(
+                {'detail': 'Both garage and date query params are required.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Only count active bookings — cancelled/rejected slots are free again
+        booked = Booking.objects.filter(
+            garage_id=garage_id,
+            date=date,
+            status__in=['pending', 'accepted', 'in_progress']
+        ).values_list('time', flat=True)
+
+        return Response({'booked_slots': list(booked)})
