@@ -1,4 +1,4 @@
-## MOTOBEE Backend (No Tenants)
+# MOTOBEE Backend (No Tenants)
 
 Simple setup — PostgreSQL + JWT + WebSockets. Tenants will be added later.
 
