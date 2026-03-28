@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'garages',
     'bookings',
     'notifications',
+    'vehicles',
 ]
 
 # ─────────────────────────────────────────
@@ -204,3 +205,21 @@ LOGGING = {
     'handlers': {'console': {'class': 'logging.StreamHandler', 'formatter': 'verbose'}},
     'root': {'handlers': ['console'], 'level': 'INFO'},
 }
+FIREBASE_PROJECT_ID = os.environ.get("FIREBASE_PROJECT_ID", "")
+FIREBASE_PRIVATE_KEY_ID = os.environ.get("FIREBASE_PRIVATE_KEY_ID", "")
+
+# Convert \n in .env into actual new lines
+FIREBASE_PRIVATE_KEY = os.environ.get("FIREBASE_PRIVATE_KEY", "").replace("\\n", "\n")
+
+FIREBASE_CLIENT_EMAIL = os.environ.get("FIREBASE_CLIENT_EMAIL", "")
+FIREBASE_CLIENT_ID = os.environ.get("FIREBASE_CLIENT_ID", "")
+FIREBASE_CLIENT_CERT_URL = os.environ.get("FIREBASE_CLIENT_CERT_URL", "")
+
+# Static values
+FIREBASE_TYPE = "service_account"
+FIREBASE_AUTH_URI = "https://accounts.google.com/o/oauth2/auth"
+FIREBASE_TOKEN_URI = "https://oauth2.googleapis.com/token"
+FIREBASE_AUTH_PROVIDER_CERT_URL = "https://www.googleapis.com/oauth2/v1/certs"
+FIREBASE_UNIVERSE_DOMAIN = "googleapis.com"
+
+
