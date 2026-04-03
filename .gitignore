@@ -1,4 +1,6 @@
-# Python
+# =========================
+# 🐍 Python
+# =========================
 __pycache__/
 *.py[cod]
 *.pyo
@@ -8,41 +10,49 @@ __pycache__/
 *.egg-info/
 dist/
 build/
-develop-eggs/
 .eggs/
 .Python
 
-# Virtualenv
+# =========================
+# 🌱 Virtual Environments
+# =========================
 venv/
 env/
 ENV/
 .venv/
 .ENV/
+
+# Environment variables
 *.env
 *.env.*
 
-# Django/DRF/FastAPI
+# =========================
+# 🗄️ Database
+# =========================
 *.sqlite3
 db.sqlite3
+
+# =========================
+# 🪵 Logs
+# =========================
 *.log
+logs/
+
+# =========================
+# ⚙️ Framework specific
+# =========================
+
+# Django
+staticfiles/
 media/
-# staticfiles/
 local_settings.py
 
-# IDEs and editors
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
+# FastAPI / general
+*.db
 
-# OS files
-.DS_Store
-Thumbs.db
-
-# Git
-*.orig
-
-# Testing
+# =========================
+# 🧪 Testing & Coverage
+# =========================
 .coverage
 coverage.xml
 htmlcov/
@@ -50,35 +60,74 @@ htmlcov/
 .pytest_cache/
 .nox/
 
-# Migrations (optional: include them if you prefer generating fresh migrations per environment)
-**/migrations/*
+# =========================
+# 🧠 Migrations (IMPORTANT)
+# =========================
+
+# ✅ Keep migrations (DO NOT IGNORE .py files)
 **/migrations/__pycache__/
 **/migrations/*.py[cod]
 **/migrations/*.py~
 
-# Node.js frontend (if using React/Vite etc.)
+# =========================
+# 🧑‍💻 IDEs & Editors
+# =========================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# =========================
+# 💻 OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# 🌐 Node.js / Frontend
+# =========================
 node_modules/
-build/
 dist/
-*.lock
+build/
+
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Custom / project-specific
-logs/
+# Lock files (optional: keep if needed)
+# package-lock.json
+# yarn.lock
+
+# =========================
+# 🐳 Docker
+# =========================
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# Ignore local override files
+docker-compose.override.yml
+
+# =========================
+# 🔐 Secrets & Keys
+# =========================
 secrets.json
-frontend/.env
+*.pem
+*.key
 
-
-
-# keys private and public
-private_key.pem
-public_key.pem
-Frontend_public_key.pem
-
+# =========================
+# 📦 Misc
+# =========================
 *.whl
+*.orig
 
-
-*.yml
-Dockerfile
+# =========================
+# 🚫 Files you should NOT ignore
+# =========================
+# (Make sure these stay tracked)
+# migrations/*.py
+# requirements.txt
+# Dockerfile
+# docker-compose.yml
