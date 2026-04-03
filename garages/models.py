@@ -30,6 +30,8 @@ class Garage(models.Model):
 
     # services stored as {"bike": [...], "scooty": [...]}
     services  = models.JSONField(default=dict, blank=True)
+    
+    service_prices = models.JSONField(default=dict, blank=True)
 
     photo      = models.ImageField(upload_to='garages/', null=True, blank=True)
     is_active  = models.BooleanField(default=True)

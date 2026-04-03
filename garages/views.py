@@ -116,15 +116,19 @@ class GarageServicesView(APIView):
 
     @extend_schema(
         tags=['Garages'],
-        summary='Update bike and scooty services',
+        summary='Update bike/scooty services and their prices',
         request=GarageSerializer,
         responses={200: GarageSerializer},
     )
     def patch(self, request):
         garage = get_or_create_garage(request.user)
-        bike   = request.data.get('bike_services',   garage.services.get('bike', []))
-        scooty = request.data.get('scooty_services', garage.services.get('scooty', []))
-        garage.services = {'bike': bike, 'scooty': scooty}
+
+        if 'services' in request.data:
+            garage.services = request.data['services']
+
+        if 'service_prices' in request.data:
+            garage.service_prices = request.data['service_prices']
+
         garage.save()
         return Response(GarageSerializer(garage).data)
 
@@ -202,17 +206,31 @@ class GarageScheduleView(APIView):
         return Response(GarageScheduleSerializer(updated, many=True).data)
 
 
-# ─── GET /garages/{id}/   single garage detail for customer
-class GarageDetailView(generics.RetrieveAPIView):
-    serializer_class   = GarageSerializer
-    permission_classes = [permissions.AllowAny]
-    queryset           = Garage.objects.prefetch_related('schedule').all()
-    lookup_field       = 'id'
+# ─── GET /garages/{id}/ & PATCH  single garage detail for customer
+class GarageDetailView(generics.RetrieveUpdateAPIView):
+    serializer_class  = GarageSerializer
+    queryset          = Garage.objects.prefetch_related('schedule').all()
+    lookup_field      = 'id'
+    http_method_names = ['get', 'patch']
+
+    def get_permissions(self):
+        if self.request.method == 'PATCH':
+            return [permissions.IsAuthenticated()]
+        return [permissions.AllowAny()]
+
+    def perform_update(self, serializer):
+        garage = self.get_object()
+        if garage.owner != self.request.user:
+            raise PermissionDenied('You do not own this garage.')
+        serializer.save()
 
     @extend_schema(tags=['Garages'], summary='Get garage detail')
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
+    @extend_schema(tags=['Garages'], summary='Update garage details (owner only)')
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)
 
 # ─── Services ─────────────────────────────────────────────────
 

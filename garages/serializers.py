@@ -24,7 +24,7 @@ class GarageSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'address', 'phone',
             'latitude', 'longitude',
-            'services', 'schedule',
+            'services', 'service_prices', 'schedule',
             'photo', 'is_active',
         ]
         read_only_fields = ['id']
@@ -39,8 +39,10 @@ class GarageListSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'address', 'phone',
             'latitude', 'longitude', 'distance_km',
-            'services', 'schedule', 'photo', 'is_active',
+            'services', 'service_prices', 'schedule',
+            'photo', 'is_active',
         ]
+
 
 
 class ServiceOfferSerializer(serializers.ModelSerializer):

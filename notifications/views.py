@@ -120,7 +120,7 @@ class SaveFCMTokenView(APIView):
     Saves the token for the logged-in user. Idempotent — ignores duplicates.
     Mirrors Node: POST /notifications/save-token
     """
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         request={'application/json': {'type': 'object', 'properties': {'token': {'type': 'string'}}}},
@@ -151,7 +151,7 @@ class ListFCMTokensView(APIView):
     Returns all FCM tokens for the logged-in user.
     Mirrors Node: GET /notifications/tokens
     """
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(
         responses={200: FCMTokenSerializer(many=True)},
