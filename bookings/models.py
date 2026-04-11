@@ -41,6 +41,26 @@ class Booking(models.Model):
     completed_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    # ── Per-item ──────────────────────────────────────────────────────────
+    # estimated_price   = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    # ── Order-level billing ───────────────────────────────────────────────
+    manifest_id       = models.CharField(max_length=50, blank=True, default='')
+    services_subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    platform_fee      = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    delivery_charge   = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    discount          = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    promo_code        = models.CharField(max_length=30, blank=True, default='')
+    gst               = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    cess              = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    grand_total       = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    payment_status    = models.CharField(
+        max_length=20,
+        choices=[('pending', 'Pending'), ('paid', 'Paid'), ('failed', 'Failed')],
+        default='pending'
+    )
+    payment_method    = models.CharField(max_length=30, blank=True, default='cash')
 
     class Meta:
         ordering = ['-created_at']
