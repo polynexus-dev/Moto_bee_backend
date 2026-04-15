@@ -61,6 +61,11 @@ class Booking(models.Model):
         default='pending'
     )
     payment_method    = models.CharField(max_length=30, blank=True, default='cash')
+    
+    # ✅ Delivery location fields
+    delivery_address   = models.TextField(blank=True, null=True)
+    delivery_latitude  = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
+    delivery_longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 
     class Meta:
         ordering = ['-created_at']

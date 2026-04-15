@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'bookings',
     'notifications',
     'vehicles',
+    'locationProfile',
 ]
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"

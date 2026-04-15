@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/v1/garages/', include('garages.urls')),
     path('api/v1/bookings/', include('bookings.urls')),
     path('api/v1/notifications/', include('notifications.urls')),
+    path('api/v1/', include('locationProfile.urls')),
     path('api/v1/services/offers/', ServiceOffersView.as_view(), name='service-offers'),
     path('api/v1/services/curated/', CuratedServicesView.as_view(), name='service-curated'),
     path('api/v1/services/search/', ServiceSearchView.as_view(), name='service-search'),
